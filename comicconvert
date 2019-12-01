@@ -12,6 +12,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+tmpdir=".cbr_${RANDOM}"
 
 if [ $# -eq 0 ]
 then
@@ -29,16 +30,16 @@ else
 			rarfile="$filename.rar"
 			pdffile="$filename.pdf"
 
-			mkdir .cbr/
-			cp "$file" "$rarfile"
+			mkdir ${tmpdir}/
+			/bin/cp "$file" "$rarfile"
 
-			unrar e "$rarfile" .cbr/
+			unrar e "$rarfile" ${tmpdir}/
 
-			find .cbr/ -name "*.webp" -exec dwebp {} -o {}.jpg \;
-			convert .cbr/*.jpg  "$pdffile"
+			find ${tmpdir}/ -name "*.webp" -exec dwebp {} -o {}.jpg \;
+			convert ${tmpdir}/*.jpg  "$pdffile"
 
-			rm "$rarfile"
-			rm -rf .cbr/
+			/bin/rm "$rarfile"
+			/bin/rm -rf ${tmpdir}/
 		fi
 
 		if [[ "$filetype" == "cbz" ]]
@@ -47,16 +48,16 @@ else
 			zipfile="$filename.zip"
 			pdffile="$filename.pdf"
 
-			mkdir .cbz/
+			mkdir ${tmpdir}/
 			cp "$file" "$zipfile"
 
-			unzip -j "$zipfile" -d .cbz/
+			unzip -j "$zipfile" -d ${tmpdir}/
 
-			find .cbz/ -name "*.webp" -exec dwebp {} -o {}.jpg \;
-			convert .cbz/*.jpg "$pdffile"
+			find ${tmpdir}/ -name "*.webp" -exec dwebp {} -o {}.jpg \;
+			convert ${tmpdir}/*.jpg "$pdffile"
 
 			rm "$zipfile"
-			rm -rf .cbz/
+			rm -rf ${tmpdir}/
 		fi
 	done
 fi
